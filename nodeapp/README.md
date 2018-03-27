@@ -52,7 +52,7 @@ sudo docker run -it --rm --name=qlabnodeapp -v `pwd`/data:/root/work/data qlabno
 ```
 run in container
 ```
-node dist/index.js
+node dist/index.js data/RED\ EARTH\ \ MM\ SCRIPT\ EXTRACT\ FOR\ III\ HACK\ FEST\ DAY.docx data/captions.json data/captions.txt
 ```
 update
 ```
