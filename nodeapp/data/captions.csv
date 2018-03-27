@@ -1,0 +1,33 @@
+action,type,uniqueID,q number,q name,patch,osc message type,custom message
+add,Memo,,,"Mirror Mirror",,,
+add,Memo,,,"By Red Earth Theatre",,,
+add,Memo,,,"Script Extract for III Research Project",,,
+add,Memo,,,"Hack Fest Days 26 – 27 March 2018\n\nEach CAP number shows a new slide",,,
+add,Memo,,,"Little Red Riding Hood – The First Murder Attempt",,,
+add,OSC,,,"CAP 1","1","custom","/CAP/1"
+add,OSC,,,"CAP 1,A2","1","custom","/CAP/1,A2"
+add,OSC,,,"CAP 2","1","custom","/CAP/2"
+add,OSC,,,"CAP 2,A2","1","custom","/CAP/2,A2"
+add,OSC,,,"CAP 3","1","custom","/CAP/3"
+add,OSC,,,"CAP 4","1","custom","/CAP/4"
+add,OSC,,,"CAP 5","1","custom","/CAP/5"
+add,OSC,,,"CAP 6","1","custom","/CAP/6"
+add,OSC,,,"CAP 7","1","custom","/CAP/7"
+add,OSC,,,"CAP 8","1","custom","/CAP/8"
+add,OSC,,,"CAP 9","1","custom","/CAP/9"
+add,OSC,,,"CAP 10","1","custom","/CAP/10"
+add,OSC,,,"CAP 11","1","custom","/CAP/11"
+add,OSC,,,"CAP 12","1","custom","/CAP/12"
+add,OSC,,,"CAP 13","1","custom","/CAP/13"
+add,OSC,,,"CAP 14","1","custom","/CAP/14"
+add,OSC,,,"CAP 15","1","custom","/CAP/15"
+add,OSC,,,"CAP 16","1","custom","/CAP/16"
+add,OSC,,,"CAP 17","1","custom","/CAP/17"
+add,OSC,,,"CAP 18","1","custom","/CAP/18"
+add,OSC,,,"CAP 19","1","custom","/CAP/19"
+add,OSC,,,"CAP 20","1","custom","/CAP/20"
+add,OSC,,,"CAP 21","1","custom","/CAP/21"
+add,OSC,,,"CAP 22","1","custom","/CAP/22"
+add,OSC,,,"CAP 23","1","custom","/CAP/23"
+add,OSC,,,"CAP 24","1","custom","/CAP/24"
+add,OSC,,,"CAP 25","1","custom","/CAP/25"

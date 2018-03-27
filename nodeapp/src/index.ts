@@ -2,15 +2,19 @@ import * as mammoth from 'mammoth'
 import * as sax from 'sax'
 import * as fs from 'fs'
 
-if (5 != process.argv.length) {
-    console.log(`usage: node ${process.argv[1]} SCRIPT.docx OUT.json OUT.txt`)
+if (6 != process.argv.length) {
+    console.log(`usage: node ${process.argv[1]} SCRIPT.docx OUT.json OUT.txt CUES.csv`)
     process.exit(-1)
 }
 
 let path = process.argv[2]
 let jsonout = process.argv[3]
 let textout = process.argv[4]
+let csvout = process.argv[5]
+
 console.log(`reading script file ${path}`)
+
+const DEFAULT_PATCH = "1"
 
 enum CueType {
     CAPTION,
@@ -23,6 +27,42 @@ interface Cue {
     text:string // Caption or comment
 }
 
+enum QlabCueAction {
+    ADD = 'add'
+}
+enum OscMessageType {
+    CUSTOM = 'custom'
+}
+
+interface QlabCue {
+    action?:QlabCueAction
+    cueType:string
+    uniqueID?:string
+    qNumber?:string
+    qName?:string
+    //cue target", "file target", "pre wait", ¬
+    //"duration", "post wait", "continue mode", "broken", "notes", "mode", "opacity", ¬
+    patch?:string
+    oscMessageType?:OscMessageType
+    customMessage?:string
+}
+
+function escapeCsv(s:string) : string {
+    if (s===null || s===undefined)
+        return "";
+    return '"'+s.replace(/"/g, '""').replace(/\n/g,'\\n')+'"'
+}
+function cuesToCsv(cues: QlabCue[]) : string {
+    let text = ''
+    text  += 'action,type,uniqueID,q number,q name,patch,osc message type,custom message\n'
+    for (let cue of cues) {
+        text += `${cue.action},${cue.cueType},,${escapeCsv(cue.qNumber)},${escapeCsv(cue.qName)},${escapeCsv(cue.patch)},${escapeCsv(cue.oscMessageType)},${escapeCsv(cue.customMessage)}\n`
+    }
+    return text
+}
+function stripHtml(s:string): string {
+    return s.replace(/<[^>]+>/g,'')
+}
 mammoth.convertToHtml({path: path}, {ignoreEmptyParagraphs:false})
     .then((result) => {
         let lines = []
@@ -85,7 +125,7 @@ mammoth.convertToHtml({path: path}, {ignoreEmptyParagraphs:false})
         let currentCue:Cue = null
         let cues:Cue[] = []
         let blankCount = 0
-        let cueRegex = new RegExp('^[Cc][Aa][Pp]\\s+(\\S+)+\\s(.*)$')
+        let cueRegex = new RegExp('^[Cc][Aa][Pp]\\s+(\\S+)\\s(.*)$')
         let contRegex = new RegExp('^\\s')
         let strongRegex = new RegExp('^<[Ss][Tt][Rr][Oo][Nn][Gg]>')
         var res
@@ -97,7 +137,8 @@ mammoth.convertToHtml({path: path}, {ignoreEmptyParagraphs:false})
                 let text = (res[2] as string).trim()
                 if ('blank slide' == text.toLowerCase())
                     text = ''
-                currentCue = {cueType: CueType.CAPTION, captionNumber: res[1] as string, text: text }
+                let captionNumber = 'CAP '+(res[1] as string)
+                currentCue = {cueType: CueType.CAPTION, captionNumber: captionNumber, text: text }
                 cues.push(currentCue)
             } else if (contRegex.test(line) || !strongRegex.test(line)) {
                 // sometime paragraph left offset is used rather than tab for continuation
@@ -136,5 +177,30 @@ mammoth.convertToHtml({path: path}, {ignoreEmptyParagraphs:false})
             console.log(`Error writing ${textout}: ${err.message}`)
         }        
         console.log(`wrote to ${textout}`)
+        
+        // OSC for Qlab
+        let qlabCues:QlabCue[] = []
+        for (let cue of cues) {
+            var qcue:QlabCue
+            switch (cue.cueType) {
+            case CueType.CAPTION:
+                let osc = '/'+cue.captionNumber.replace(/ /g, '/')
+                qcue = {action: QlabCueAction.ADD, cueType: 'OSC', qName: cue.captionNumber, patch: DEFAULT_PATCH, oscMessageType: OscMessageType.CUSTOM, customMessage: osc }
+                qlabCues.push(qcue)
+                break;
+            case CueType.COMMENT:
+                qcue = {action: QlabCueAction.ADD, cueType: 'Memo', qName: stripHtml(cue.text) }
+                qlabCues.push(qcue)
+                break;
+            }
+        }
+        let csv = cuesToCsv(qlabCues)
+        try {
+            fs.writeFileSync(csvout, csv, {encoding:'utf8'})
+        } catch(err) {
+            console.log(`Error writing ${csvout}: ${err.message}`)
+        }        
+        console.log(`wrote to ${csvout}`)
+        
     })
     .done();

@@ -39,8 +39,13 @@ array of `cue`
 
 For Joe Marshall's unity renderer...
 
-- line starting with `#` is new cue, followed by cue number
+- line starting with `#` is new cue, followed by cue name/number (e.g. "CUE 1"), optionally followed by "," and display area name (defaults to first)
+- line with '[' filename ']' is background image
+- line with '{' filename '}' is background video
 - other lines are text of cue
+
+Joe's OSC server:
+- "/" caption name with "/" instead of ' ', e.g. "/CAP/1"
 
 ### Qlab
 
