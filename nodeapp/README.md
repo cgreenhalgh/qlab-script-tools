@@ -42,6 +42,13 @@ For Joe Marshall's unity renderer...
 - line starting with `#` is new cue, followed by cue number
 - other lines are text of cue
 
+### Qlab
+
+Qlab OSC messages:
+- `q type` "OSC"
+- `osc message type` "custom"
+- `custom message` "/message parameters" (double quote strings)
+
 ## Build
 
 ```
