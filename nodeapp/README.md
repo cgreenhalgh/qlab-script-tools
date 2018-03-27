@@ -2,6 +2,8 @@
 
 try processing a script word file and outputting useful stuff.
 
+Currently generates a json file for Tosh's demo, a txt file for Joe's renderer and a CSV file for creating qlab cues from (for use with Joe's renderer).
+
 ## script format
 
 just from an initial sample...
