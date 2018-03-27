@@ -1,0 +1,31 @@
+{
+	"name": "qlab-script-tools-nodeapp",
+	"version": "0.1.0",
+	"description": "script tools for use with qlab",
+	"main": "index.js",
+	"directories": {
+		"doc": "docs"
+	},
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch & nodemon dist",
+		"tsc": "tsc",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cgreenhalgh/qlab-script-tools.git"
+	},
+	"author": "Chris Greenhalgh",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cgreenhalgh/qlab-script-tools/issues"
+	},
+	"homepage": "https://github.com/cgreenhalgh/qlab-script-tools/#readme",
+	"dependencies": {
+		"@types/node": "^8.0.53",
+		"@types/sax": "^1.0.0",
+		"mammoth": "^1.4.4",
+		"sax": "^1.2.4"
+	}
+}
